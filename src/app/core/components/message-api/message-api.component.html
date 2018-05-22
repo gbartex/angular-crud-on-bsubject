@@ -1,0 +1,22 @@
+<ng-container *ngTemplateOutlet="getMessageTemplate(data.type); context:getMessageContext(data)"></ng-container> 
+
+ <ng-template #success let-outcome>
+   <div fxLayout="row" fxLayoutAlign="space-around center">
+     <p class="text">{{outcome.message}}</p>
+     <mat-icon color="primary">check_circle</mat-icon>
+   </div>
+</ng-template>
+
+ <ng-template #info let-outcome>
+   <div fxLayout="row" fxLayoutAlign="space-around center">
+     <p class="text">{{outcome.message}}</p>
+     <mat-icon color="accent">info</mat-icon>
+   </div>
+</ng-template>
+
+ <ng-template #failure let-outcome>
+   <div fxLayout="row" fxLayoutAlign="space-around center">
+     <p class="text">{{outcome.message}}</p>
+     <mat-icon color="warn">bug_report</mat-icon>
+   </div>
+</ng-template>

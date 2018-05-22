@@ -1,0 +1,35 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="shouldRun">
+	<mat-toolbar color="primary" class="example-toolbar">
+		<button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+		<h1 class="example-app-name">Demo app</h1>
+	</mat-toolbar>
+
+	<mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+		<mat-sidenav class="example-sidenav" #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+		 fixedTopGap="56">
+			<mat-nav-list fxFlex>
+				<a mat-list-item routerLink=".">
+					<mat-icon color="primary">home</mat-icon>
+					<span>Home</span></a>
+				<mat-divider></mat-divider>
+				<a *ngIf="auth.loggedIn" mat-list-item (click)="logout()">
+					<mat-icon color="warn">exit_to_app</mat-icon>
+					<span>Log out</span>
+				</a>
+				<!-- only for tests -->
+				<mat-divider></mat-divider>
+
+				<a mat-list-item routerLink="registration/users">
+					<mat-icon color="accent">supervisor_account</mat-icon>
+					<span>Users</span></a>
+				<a mat-list-item routerLink="registration/users/add">
+					<mat-icon color="accent">add</mat-icon>
+					<span>User</span></a>
+			</mat-nav-list>
+		</mat-sidenav>
+
+		<mat-sidenav-content>
+			<ng-content></ng-content>
+		</mat-sidenav-content>
+	</mat-sidenav-container>
+</div>

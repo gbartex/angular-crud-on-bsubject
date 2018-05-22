@@ -1,0 +1,103 @@
+<pre *ngIf="debug">{{form?.value | json }}</pre>
+<form [formGroup]="form" fxLayout="column" fxLayoutGap="10px" fxLayoutGap.gt-sm="0" fxLayout.gt-sm="row wrap" fxLayoutAlign.gt-sm="space-around center"
+ novalidate>
+
+	<h2 fxFlex="100" class="mb-3">Required informations</h2>
+	<mat-form-field fxFlex.gt-sm="45">
+		
+    <input matInput placeholder="Email" formControlName="email" [errorStateMatcher]="matcher">
+     <mat-icon *ngIf="email.valid" matSuffix [color]="'primary'">check</mat-icon>
+     <mat-icon *ngIf="email.hasError('emailTaken')" matSuffix [color]="'warn'">error</mat-icon>
+		<mat-hint *ngIf="email.status==='PENDING'"> Checking...</mat-hint>
+		<mat-error *ngIf="email.hasError('required')">Email is required.</mat-error>
+		<mat-error *ngIf="email.hasError('emailTaken')">Email is taken.</mat-error>
+	</mat-form-field>
+
+  <mat-form-field fxFlex.gt-sm="45">
+		<input matInput placeholder="Phone" formControlName="phone" [errorStateMatcher]="matcher">
+		<mat-error *ngIf="phone.hasError('required')">Phone is required.</mat-error>
+     	<mat-error *ngIf="phone.hasError('pattern')">Phone must have 9 numbers and may have added regional code.</mat-error>
+	</mat-form-field>
+
+	<mat-form-field fxFlex.gt-sm="45">
+		<input matInput placeholder="First name" formControlName="firstName" [errorStateMatcher]="matcher">
+		<mat-error *ngIf="firstName.hasError('required')">First name is required.</mat-error>
+    	<mat-error *ngIf="firstName.hasError('pattern')">First name should contain only word characters.</mat-error>
+		<mat-error *ngIf="firstName.hasError('minlength')">First name requires {{firstName.getError('minlength').requiredLength-firstName.getError('minlength').actualLength}} characters.
+		</mat-error>
+		<mat-error *ngIf="firstName.hasError('maxlength')">There are {{firstName.getError('maxlength').actualLength-firstName.getError('maxlength').requiredLength}} characters too
+			much.
+		</mat-error>
+	</mat-form-field>
+
+	<mat-form-field fxFlex.gt-sm="45">
+		<input matInput placeholder="Last name" formControlName="lastName" [errorStateMatcher]="matcher">
+		<mat-error *ngIf="lastName.hasError('required')">Last name is required.</mat-error>
+     	<mat-error *ngIf="lastName.hasError('pattern')">Last name should contain only word characters.</mat-error>
+		<mat-error *ngIf="lastName.hasError('minlength')">Last name requires {{lastName.getError('minlength').requiredLength-lastName.getError('minlength').actualLength}} characters.
+		</mat-error>
+		<mat-error *ngIf="lastName.hasError('maxlength')">There are {{lastName.getError('maxlength').actualLength-lastName.getError('maxlength').requiredLength}} characters too
+			much.
+		</mat-error>
+	</mat-form-field>
+
+	<h2 fxFlex="100" class="mb-3">Additional informations</h2>
+   <mat-form-field fxFlex.gt-sm="45">
+		<input matInput placeholder="Home no" formControlName="home_no" [errorStateMatcher]="matcher">
+     	<mat-error *ngIf="home_no.hasError('pattern')">Home no must have from 1 to 3 digits and may have one word character.</mat-error>
+	</mat-form-field>
+
+   <mat-form-field fxFlex.gt-sm="45">
+		<input matInput placeholder="Zip code" formControlName="zip_code" [errorStateMatcher]="matcher" [matAutocomplete]="auto_zip">
+     	<mat-error *ngIf="zip_code.hasError('pattern')">Zip code must match the pattern xx-xxx.</mat-error>
+        <mat-autocomplete #auto_zip="matAutocomplete" (optionSelected)="onSelected($event.option.value)"  >
+      <mat-option *ngFor="let option of filteredOptions" [value]="option" >
+         {{option.zip_code}} | {{option.city}}| {{ option.address  | shortcut:40 }}
+      </mat-option>
+    </mat-autocomplete>
+	</mat-form-field>
+
+<mat-form-field fxFlex.gt-sm="45">
+		<input matInput placeholder="City" formControlName="city" [errorStateMatcher]="matcher" [matAutocomplete]="auto_city">
+
+		<mat-error *ngIf="city.hasError('minlength')">City requires {{city.getError('minlength').requiredLength-city.getError('minlength').actualLength}} characters.
+		</mat-error>
+		<mat-error *ngIf="city.hasError('maxlength')">There are {{city.getError('maxlength').actualLength-city.getError('maxlength').requiredLength}} characters too
+			much.
+		</mat-error>
+
+       <mat-autocomplete #auto_city="matAutocomplete" (optionSelected)="onSelected($event.option.value)" >
+      <mat-option *ngFor="let option of filteredOptions" [value]="option" >
+         {{option.city}} | {{ option.address  | shortcut:40 }}
+      </mat-option>
+    </mat-autocomplete>
+	</mat-form-field>
+
+   <mat-form-field fxFlex.gt-sm="45">
+		<input matInput placeholder="Address" formControlName="address" [errorStateMatcher]="matcher">
+
+		<mat-error *ngIf="address.hasError('minlength')">Address requires {{address.getError('minlength').requiredLength-address.getError('minlength').actualLength}} characters.
+		</mat-error>
+		<mat-error *ngIf="address.hasError('maxlength')">There are {{address.getError('maxlength').actualLength-address.getError('maxlength').requiredLength}} characters too
+			much.
+		</mat-error>
+	</mat-form-field>
+
+
+	<div class="my-3" fxLayout="row wrap" fxLayoutAlign.gt-xs="space-around center" fxLayoutAlign.gt-sm="end center" fxLayoutGap.gt-sm="10px"
+	 fxFill>
+		<ng-container *ngIf="userEdit; else add">
+			<button [disabled]="form.invalid || shouldBeDisabled" (click)="editUser()" fxFlexOrder="1" mat-raised-button color="primary"
+			 fxFlex="100" fxFlex.sm="45" fxFlex.gt-sm="33">
+          Update user
+        </button>
+		</ng-container>
+		<ng-template #add>
+			<button [disabled]="form.invalid||form.status==='PENDING'" (click)="addUser()" fxFlexOrder="1" mat-raised-button color="primary"
+			 fxFlex="100" fxFlex.sm="45" fxFlex.gt-sm="33">
+          Add user
+        </button>
+		</ng-template>
+		<button [disabled]="form.untouched" (click)="form.reset()" mat-raised-button color="accent" fxFlex="100" fxFlex.sm="45" fxFlex.gt-sm="33">Reset</button>
+	</div>
+</form>

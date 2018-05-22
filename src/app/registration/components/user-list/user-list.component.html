@@ -1,0 +1,56 @@
+<div class="mat-elevation-z8 mt-3" fxLayout="column" fxLayoutAlign="center center">
+	<mat-form-field class="filter-field my-3" [ngStyle]="{'margin':auto}">
+		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+	</mat-form-field>
+	<div class="loading-shade my-2" fxFlexOrder="1" *ngIf="isLoadingResults || isRateLimitReached" fxLayout="row" fxLayoutAlign="center center">
+		<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+		<div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+			Service API rate limit has been reached. It will be reset in one minute.
+		</div>
+	</div>
+
+	<mat-table fxFill fxFlex="90" #table [dataSource]="dataSource" class="table" matSort matSortActive="model" matSortDisableClear
+	 matSortDirection="asc">
+
+		<!-- name Column -->
+		<ng-container matColumnDef="email">
+			<mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+			<mat-cell *matCellDef="let row">{{ row.email }}</mat-cell>
+		</ng-container>
+
+		<!-- username Column -->
+		<ng-container matColumnDef="firstName">
+			<mat-header-cell *matHeaderCellDef>First name</mat-header-cell>
+			<mat-cell *matCellDef="let row">{{ row.firstName }}</mat-cell>
+		</ng-container>
+
+    <!-- lastname Column -->
+		<ng-container matColumnDef="lastName">
+			<mat-header-cell *matHeaderCellDef>Last name</mat-header-cell>
+			<mat-cell *matCellDef="let row">{{ row.lastName }}</mat-cell>
+		</ng-container>
+
+		<!-- Actions Column -->
+		<ng-container matColumnDef="details">
+			<mat-header-cell *matHeaderCellDef>Details</mat-header-cell>
+			<mat-cell *matCellDef="let row">
+				<button mat-button color="primary" (click)="goToUser(row)">Show</button>
+			</mat-cell>
+		</ng-container>
+
+		<!-- Delete Column -->
+		<ng-container matColumnDef="delete">
+			<mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
+			<mat-cell *matCellDef="let row">
+				<button (click)="deleteUser(row)" mat-icon-button> <mat-icon color="warn">delete</mat-icon></button>
+			</mat-cell>
+		</ng-container>
+
+		<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+		<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+	</mat-table>
+
+	<mat-paginator fxFlexOrder="3" class="mt-2" fxFlexAlign="end" [length]="resultsLength" [pageSizeOptions]="[2, 4, 10]">
+	</mat-paginator>
+</div>

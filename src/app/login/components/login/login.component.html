@@ -1,0 +1,18 @@
+<div  fxFill fxFlex.xs="100" fxFlex.sm="70" fxFlex.gt-sm="50" [ngStyle]="{'margin':'0 auto'}">
+  <p>
+  {{f.value|json}}
+</p>
+<mat-card class="mt-4">
+	<mat-card-title>Login panel</mat-card-title>
+  <div class="pb-4" fxFill fxLayoutAlign="center"><mat-icon [ngStyle]="{'font-size.rem':4,'position':'relative','left.rem':-2}" color="primary">person_pin</mat-icon></div>
+	<form #f="ngForm" fxFill fxLayout="column" class="py-3" (ngSubmit)="onSubmit()" novalidate>
+		<mat-form-field>
+			<input name="login" matInput placeholder="Login" [(ngModel)]="login">
+		</mat-form-field>
+		<mat-form-field>
+			<input name="password" type="password" matInput placeholder="Password" [(ngModel)]="password">
+		</mat-form-field>
+		<button class="mt-2" mat-raised-button color="primary">Sign in</button>
+	</form>
+</mat-card>
+</div>

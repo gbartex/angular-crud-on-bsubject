@@ -1,0 +1,8 @@
+<div mat-dialog-title class="mat-h2">{{data.title}}</div>
+<div class="body-1 pb-3" mat-dialog-content>
+	<p>{{data.question}}</p>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+	<button mat-button (click)="onClick(false)" cdkFocusInitial>No</button>
+	<button mat-button (click)="onClick(true)">Yes</button>
+</div>
